@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.yarn
 .pnp
 
 # testing
@@ -11,6 +12,7 @@
 /build
 /dist
 /.next
+/storybook-static
 
 # misc
 .DS_Store
