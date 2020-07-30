@@ -1,13 +1,15 @@
 import { Router } from "express";
-import { issueService } from "../services/jira/issue.service";
+import { jiraService } from "../services/jira/jira.service";
 
 const router = Router({ mergeParams: true });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:issueId", async (req, res, next) => {
   try {
-    const issueId = req.params.id;
-    const issue = await issueService.getIssue(issueId);
-    res.json({ ok: true, data: issue });
+    const issueId = req.params.issueId;
+    const response = await jiraService.issue.getIssue({
+      issueIdOrKey: issueId,
+    });
+    res.json(response);
   } catch (error) {
     next(error);
   }

@@ -1,12 +1,16 @@
 import express from "express";
-import issuesRoutes from "./routes/issues.routes";
-import boardsRoutes from "./routes/boards.routes";
+import projectRoutes from "./routes/projects.routes";
+import issueRoutes from "./routes/issues.routes";
+import boardRoutes from "./routes/boards.routes";
+import sprintRoutes from "./routes/sprints.routes";
 
 const app = express();
 const port = 3000;
 
-app.use("/issues", issuesRoutes);
-app.use("/boards", boardsRoutes);
+app.use("/projects", projectRoutes);
+app.use("/issues", issueRoutes);
+app.use("/boards", boardRoutes);
+app.use("/sprints", sprintRoutes);
 
 // error handler
 function errorHandler(err, req, res, next) {

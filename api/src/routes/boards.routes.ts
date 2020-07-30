@@ -1,42 +1,57 @@
 import { Router } from "express";
 import { boardService } from "../services/jira/board.service";
+import { jiraService } from "../services/jira/jira.service";
 
 const router = Router({ mergeParams: true });
 
 router.get("/", async (req, res, next) => {
   try {
-    const boards = await boardService.getBoards();
-    res.json({ ok: true, data: boards });
+    const response = await jiraService.board.getAllBoards();
+    res.json(response);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:boardId", async (req, res, next) => {
   try {
-    const boardId = req.params.id;
-    const board = await boardService.getBoard(boardId);
-    res.json({ ok: true, data: board });
+    const boardId = parseInt(req.params.boardId, 10);
+    const response = await jiraService.board.getBoard({ boardId });
+    res.json(response);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:id/issues", async (req, res, next) => {
+router.get("/:boardId/sprints", async (req, res, next) => {
   try {
-    const boardId = req.params.id;
-    const issues = await boardService.getBoardIssues(boardId);
-    res.json({ ok: true, data: issues });
+    const boardId = parseInt(req.params.boardId, 10);
+    const response = await jiraService.board.getAllSprints({ boardId });
+    res.json(response);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:id/sprints", async (req, res, next) => {
+router.get("/:boardId/backlog-issues", async (req, res, next) => {
   try {
-    const boardId = req.params.id;
-    const sprints = await boardService.getBoardSprints(boardId);
-    res.json({ ok: true, data: sprints });
+    const boardId = parseInt(req.params.boardId, 10);
+    const response = await jiraService.board.getIssuesForBacklog({
+      boardId,
+    });
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/:boardId/issues", async (req, res, next) => {
+  try {
+    const boardId = parseInt(req.params.boardId, 10);
+    const response = await jiraService.board.getIssuesForBoard({
+      boardId,
+    });
+    res.json(response);
   } catch (error) {
     next(error);
   }

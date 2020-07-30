@@ -1,11 +1,11 @@
-interface Board {
+export interface Board {
   id: number;
   name: string;
   type: string;
   location: BoardProject;
 }
 
-interface BoardProject {
+export interface BoardProject {
   projectId: number;
   displayName: string;
   projectName: string;

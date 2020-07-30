@@ -1,4 +1,4 @@
-interface Issue {
+export interface Issue {
   id: string;
   key: string;
   type: IssueType; // issuetype
@@ -24,7 +24,7 @@ interface Issue {
   // worklog
 }
 
-interface IssueStatus {
+export interface IssueStatus {
   description: string;
   iconUrl: string;
   name: string;
@@ -32,14 +32,14 @@ interface IssueStatus {
   statusCategory: IssueStatusCategory;
 }
 
-interface IssueStatusCategory {
+export interface IssueStatusCategory {
   id: number;
   key: string;
   colorName: string;
   name: string;
 }
 
-interface IssueType {
+export interface IssueType {
   id: string;
   description: string;
   iconUrl: string;
@@ -48,7 +48,7 @@ interface IssueType {
   avatarId: number;
 }
 
-interface Attachment {
+export interface Attachment {
   id: string;
   filename: string;
   author: User;
@@ -59,7 +59,7 @@ interface Attachment {
   thumbnail: string;
 }
 
-interface User {
+export interface User {
   accountId: string;
   emailAddress: string;
   avatarUrls: AvatarUrls;
@@ -69,7 +69,7 @@ interface User {
   accountType: string;
 }
 
-interface Project {
+export interface Project {
   id: string;
   key: string;
   name: string;
@@ -85,12 +85,12 @@ type AvatarUrls = string;
 //   "32x32"?: string;
 // }
 
-interface Watches {
+export interface Watches {
   watchCount: number;
   isWatching: boolean;
 }
 
-interface Priority {
+export interface Priority {
   iconUrl: string;
   name: string;
   id: string;
