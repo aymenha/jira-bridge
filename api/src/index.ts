@@ -1,22 +1,15 @@
-import express from "express";
-import issuesRoutes from "./routes/issues.routes";
-import boardsRoutes from "./routes/boards.routes";
+import { createServer } from 'http';
+import { config } from 'dotenv';
 
-const app = express();
-const port = 3000;
+config();
 
-app.use("/issues", issuesRoutes);
-app.use("/boards", boardsRoutes);
+import { app } from './app';
 
-// error handler
-function errorHandler(err, req, res, next) {
-  if (res.headersSent) {
-    return next(err);
-  }
-  res.status(500);
-  res.json({ ok: false, error: err.message });
-}
-app.use(errorHandler);
+const port = process.env.PORT || 5000;
 
-// start server
-app.listen(port, () => console.log(`Server listening on port ${port}`));
+const server = createServer(app);
+
+server.listen(port);
+
+server.on('listening', () => console.log(`Server is running at port ${port}`));
+server.on('error', console.log);
