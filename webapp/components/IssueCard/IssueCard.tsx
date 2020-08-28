@@ -38,11 +38,13 @@ const useStyles = makeStyles({
   }
 });
 
-interface IssueCardProps {
+export interface IssueCardType {
   title: string;
-  onClick: () => void;
   tags?: string[];
   assignedTo?: Member[];
+}
+interface IssueCardProps extends IssueCardType {
+  onClick: () => void;
 }
 
 export default ({ title, tags, assignedTo, onClick }: IssueCardProps) => {
