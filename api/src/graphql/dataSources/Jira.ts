@@ -13,6 +13,10 @@ class JiraApi extends RESTDataSource {
   async getSprints(): Promise<any[]> {
     return this.get('board/2/sprint');
   }
+
+  async getSprintIssues(sprintId): Promise<any[]> {
+    return this.get(`sprint/${sprintId}/issue`);
+  }
 }
 
 export default JiraApi;
