@@ -23,7 +23,7 @@ export default ({ list }: TagsContainerProps) => {
       return { ...prev, [acc]: "#" + randomColor };
     }, {});
     setColors(generatedColors);
-  }, [list]);
+  }, []);
 
   return (
     <div className={classes.container}>
