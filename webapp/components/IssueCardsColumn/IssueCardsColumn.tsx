@@ -52,10 +52,12 @@ const useStyles = makeStyles({
     color: "#444547"
   }
 });
-
-interface IssueCardsColumnProps {
+export interface CardsColumnType {
+  id: number;
   title: string;
   list?: IssueCardType[];
+}
+interface IssueCardsColumnProps extends CardsColumnType {
   onCreate: () => void;
   onMove: Function;
 }
