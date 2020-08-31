@@ -42,4 +42,5 @@ type Issue {
   summary: String!
   type: String!
   priority: IssuePriority!
+  status: String!
 }
