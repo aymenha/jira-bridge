@@ -40,7 +40,7 @@ const useStyles = makeStyles({
 
 export interface IssueCardType {
   id: number;
-  title: string;
+  summary: string;
   tags?: string[];
   assignedTo?: Member[];
 }
@@ -48,7 +48,7 @@ interface IssueCardProps extends Omit<IssueCardType, "id"> {
   onClick: () => void;
 }
 
-export default ({ title, tags, assignedTo, onClick }: IssueCardProps) => {
+export default ({ summary, tags, assignedTo, onClick }: IssueCardProps) => {
   const classes = useStyles();
   return (
     <Box component="span" m={1}>
@@ -66,7 +66,7 @@ export default ({ title, tags, assignedTo, onClick }: IssueCardProps) => {
               gutterBottom
               variant="h6"
             >
-              {capitalize(title)}
+              {capitalize(summary)}
             </Typography>
             <div
               className={classes.actionsContainer}
