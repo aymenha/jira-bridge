@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from "react";
 
-import Button from "@material-ui/core/Button";
-import { Typography, makeStyles } from "@material-ui/core";
+import {
+  Button,
+  Typography,
+  makeStyles,
+  MenuItem,
+  IconButton,
+  Menu,
+  Chip,
+  capitalize
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import Chip from "@material-ui/core/Chip";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import IconButton from "@material-ui/core/IconButton";
 
 import IssueCard, { IssueCardType } from "../IssueCard/IssueCard";
 
@@ -75,7 +79,7 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
     <div>
       <div className={classes.headerContainer}>
         <Typography variant="h5" className={classes.headerText}>
-          {title.charAt(0).toUpperCase() + title.slice(1)}
+          {capitalize(title)}
         </Typography>
         {list && <Chip size="medium" label={list.length} />}
         <div className={classes.moreIconContainer}>
@@ -102,10 +106,11 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
         </div>
       </div>
       {list && list.length > 0 ? (
-        list.map(issue => (
+        list.map((issue, index) => (
           <IssueCard
+            key={issue.id}
             title={issue.title}
-            tags={[...issue.tags]}
+            tags={issue.tags}
             onClick={onCardClick}
             assignedTo={issue.assignedTo}
           />

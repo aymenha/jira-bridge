@@ -39,11 +39,12 @@ const useStyles = makeStyles({
 });
 
 export interface IssueCardType {
+  id: number;
   title: string;
   tags?: string[];
   assignedTo?: Member[];
 }
-interface IssueCardProps extends IssueCardType {
+interface IssueCardProps extends Omit<IssueCardType, "id"> {
   onClick: () => void;
 }
 
