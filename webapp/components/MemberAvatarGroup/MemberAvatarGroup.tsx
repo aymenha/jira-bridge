@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export interface Member {
+  id: number;
   name: string;
   picture?: string;
 }
