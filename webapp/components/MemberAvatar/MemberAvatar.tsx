@@ -22,19 +22,16 @@ interface MemberAvatarProps {
 
 export default ({ name, picture, size = "small" }: MemberAvatarProps) => {
   const classes = useStyles();
-  return (
-    <React.Fragment>
-      {picture ? (
-        <Avatar
-          alt={name}
-          src={picture}
-          className={size === "large" ? classes.large : classes.small}
-        />
-      ) : (
-        <Avatar className={size === "large" ? classes.large : classes.small}>
-          {name[0].toUpperCase()}
-        </Avatar>
-      )}
-    </React.Fragment>
-  );
+  if (picture)
+    return (
+      <React.Fragment>
+        <Avatar alt={name} src={picture} className={classes[size]} />
+      </React.Fragment>
+    );
+  else
+    return (
+      <React.Fragment>
+        <Avatar className={classes[size]}>{name[0].toUpperCase()}</Avatar>
+      </React.Fragment>
+    );
 };

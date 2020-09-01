@@ -39,7 +39,7 @@ export default ({
     <AvatarGroup
       max={maxItems}
       classes={{
-        avatar: avatarSize === "small" ? classes.small : classes.large
+        avatar: classes[avatarSize]
       }}
       style={style}
     >

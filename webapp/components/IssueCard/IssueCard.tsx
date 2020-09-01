@@ -7,7 +7,8 @@ import {
   Typography,
   CardContent,
   makeStyles,
-  Avatar
+  Avatar,
+  capitalize
 } from "@material-ui/core";
 
 import TagsContainer from "../TagsContainer/TagsContainer";
@@ -62,7 +63,7 @@ export default ({ title, tags, assignedTo, onClick }: IssueCardProps) => {
               gutterBottom
               variant="h6"
             >
-              {title.charAt(0).toUpperCase() + title.slice(1)}
+              {capitalize(title)}
             </Typography>
             <div
               className={classes.actionsContainer}
