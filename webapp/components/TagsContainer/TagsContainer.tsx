@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
-import Tag from "../Tag/Tag";
+import Tag from '../Tag/Tag';
 
 const useStyles = makeStyles(theme => ({
   container: {
-    display: "flex"
+    display: 'flex'
   }
 }));
 
@@ -20,15 +20,14 @@ export default ({ list }: TagsContainerProps) => {
   useEffect(() => {
     const generatedColors = list.reduce((prev, acc) => {
       const randomColor = Math.floor(Math.random() * 16777215).toString(16);
-      return { ...prev, [acc]: "#" + randomColor };
+      return { ...prev, [acc]: '#' + randomColor };
     }, {});
     setColors(generatedColors);
-  }, []);
+  }, [list]);
 
   return (
     <div className={classes.container}>
-      {colors &&
-        list.map(tagName => <Tag name={tagName} color={colors[tagName]} />)}
+      {colors && list.map((tagName, index) => <Tag key={index.toString()} name={tagName} color={colors[tagName]} />)}
     </div>
   );
 };
