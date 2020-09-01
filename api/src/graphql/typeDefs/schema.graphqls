@@ -8,9 +8,21 @@ enum SprintState {
   future
 }
 
+enum IssuePriority {
+  Highest
+  High
+  Medium
+  Low
+  Lowest
+}
+
 type Query {
+  #Sprint
   getSprints: [Sprint!]!
   getCurrentSprint: Sprint
+
+  #Issue
+  getSprintIssues(sprintId: ID!): [Issue!]!
 }
 
 type Sprint {
@@ -21,4 +33,14 @@ type Sprint {
   state: SprintState!
   goal: String
   self: String!
+  issues: [Issue!]!
+}
+
+type Issue {
+  id: ID!
+  key: String!
+  summary: String!
+  type: String!
+  priority: IssuePriority!
+  status: String!
 }

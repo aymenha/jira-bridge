@@ -1,5 +1,7 @@
 import sprint from './sprint';
+import issue from './issue';
 
 export default {
-  ...sprint
+  ...sprint,
+  ...issue
 };
