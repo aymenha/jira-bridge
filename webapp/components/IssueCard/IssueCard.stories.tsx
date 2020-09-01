@@ -14,11 +14,7 @@ const fakeMembersList = [
   { id: 3, name: 'Hamdi Gatri', picture: 'https://ca.slack-edge.com/T1EHPUWM8-U7TMLMR8B-8a8f4e4791a7-512' }
 ];
 export const Default = () => (
-  <IssueCard
-    summary="new task"
-    tags={['webApp', 'Api', 'DB']}
-    assignedTo={fakeMembersList}
-    onClick={() => console.log('clicked')}
+  <IssueCard summary="new task" tags={['webApp', 'Api', 'DB']} assignedTo={fakeMembersList}onClick={() => console.log('clicked')}
   />
 );
 
@@ -31,15 +27,11 @@ export const MoreMembers = () => (
   />
 );
 
-export const NoTags = () => (
-  <IssueCard summary="new task" assignedTo={fakeMembersList} onClick={() => console.log('clicked')} />
-);
+export const NoTags = () => <IssueCard summary="new task" assignedTo={fakeMembersList} onClick={() => console.log('clicked')} />;
 
 export const NotAssigned = () => <IssueCard summary="new task" onClick={() => console.log('clicked')} />;
 
-export const WithTagsButNotAssigned = () => (
-  <IssueCard summary="new task" tags={['webApp', 'Api', 'DB']} onClick={() => console.log('clicked')} />
-);
+export const WithTagsButNotAssigned = () => <IssueCard summary="new task" tags={['webApp', 'Api', 'DB']} onClick={() => console.log('clicked')} />;
 export default {
   title: 'IssueCard',
   decorators: [Host]
