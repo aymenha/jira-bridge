@@ -1,5 +1,6 @@
 schema {
   query: Query
+  mutation: Mutation
 }
 
 enum SprintState {
@@ -23,6 +24,14 @@ type Query {
 
   #Issue
   getSprintIssues(sprintId: ID!): [Issue!]!
+
+  #Transition
+  getTransitions(issueId: ID!): [Transition!]!
+}
+
+type Mutation {
+  #Issue
+  moveIssue(issueId: ID!, transitionId: ID!): Boolean
 }
 
 type Sprint {
@@ -43,4 +52,10 @@ type Issue {
   type: String!
   priority: IssuePriority!
   status: String!
+  transitions: [Transition!]!
+}
+
+type Transition {
+  id: ID!
+  name: String!
 }
