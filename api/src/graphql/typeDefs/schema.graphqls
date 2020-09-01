@@ -1,0 +1,24 @@
+schema {
+  query: Query
+}
+
+enum SprintState {
+  closed
+  active
+  future
+}
+
+type Query {
+  getSprints: [Sprint!]!
+  getCurrentSprint: Sprint
+}
+
+type Sprint {
+  id: ID!
+  name: String!
+  startDate: String!
+  endDate: String!
+  state: SprintState!
+  goal: String
+  self: String!
+}
