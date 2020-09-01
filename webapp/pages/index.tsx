@@ -1,26 +1,26 @@
-import React from "react";
-import Container from "@material-ui/core/Container";
-import Box from "@material-ui/core/Box";
-import { makeStyles } from "@material-ui/core";
+import React from 'react';
+import { Container, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import { ApolloProvider } from '@apollo/client';
+
+import client from '../apolloClient';
+import Board from './Board';
 
 const useStyles = makeStyles(() => ({
   root: {
-    height: "100vh",
-  },
+    height: '100vh'
+  }
 }));
 
 const Home = () => {
   const classes = useStyles();
+
   return (
-    <Box
-      component={Container}
-      className={classes.root}
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-    >
-      <div>Welcome</div>
-    </Box>
+    <ApolloProvider client={client}>
+      <Box component={Container} className={classes.root} display="flex" alignItems="center" justifyContent="center">
+        <Board />
+      </Box>
+    </ApolloProvider>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react';
 
 import {
   Button,
@@ -13,30 +13,30 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 
-import IssueCard, { IssueCardType } from "../IssueCard/IssueCard";
+import IssueCard, { IssueCardType } from '../IssueCard/IssueCard';
 
 const useStyles = makeStyles({
   headerContainer: {
-    display: "flex",
-    alignItems: "center"
+    display: 'flex',
+    alignItems: 'center'
   },
   headerText: {
-    color: "#444547",
+    color: '#444547',
     marginRight: 5
   },
   moreIconContainer: {
-    position: "relative",
-    display: "flex",
-    justifyContent: "flex-end",
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'flex-end',
     flex: 1
   },
   moreIcon: {
-    color: "#9d9ea2"
+    color: '#9d9ea2'
   },
   createButton: {
-    width: "100%",
-    textTransform: "none",
-    color: "grey",
+    width: '100%',
+    textTransform: 'none',
+    color: 'grey',
     padding: 10,
     marginTop: 35,
     borderRadius: 10
@@ -44,12 +44,12 @@ const useStyles = makeStyles({
   emptyList: {
     margin: 0,
     marginTop: 20,
-    padding: "60px 0px",
-    width: "100%",
-    textAlign: "center",
-    border: "1px dashed ",
-    backgroundColor: "#dfe6e9",
-    color: "#444547"
+    padding: '60px 0px',
+    width: '100%',
+    textAlign: 'center',
+    border: '1px dashed ',
+    backgroundColor: '#dfe6e9',
+    color: '#444547'
   }
 });
 export interface CardsColumnType {
@@ -59,9 +59,9 @@ export interface CardsColumnType {
 }
 interface IssueCardsColumnProps extends CardsColumnType {
   onCreate: () => void;
-  onMove: Function;
 }
-export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
+
+export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const classes = useStyles();
@@ -85,11 +85,7 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
         </Typography>
         {list && <Chip size="medium" label={list.length} />}
         <div className={classes.moreIconContainer}>
-          <IconButton
-            aria-label="more"
-            component="span"
-            onClick={handleMenuButtonClick}
-          >
+          <IconButton aria-label="more" component="span" onClick={handleMenuButtonClick}>
             <MoreHorizIcon className={classes.moreIcon} />
           </IconButton>
           {isMenuOpen && (
@@ -98,8 +94,7 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
               id="simple-menu"
               keepMounted
               open={isMenuOpen}
-              onClose={() => setIsMenuOpen(false)}
-            >
+              onClose={() => setIsMenuOpen(false)}>
               <MenuItem onClick={handleMenuClose}>item 1</MenuItem>
               <MenuItem onClick={handleMenuClose}>item 2</MenuItem>
               <MenuItem onClick={handleMenuClose}>item 3</MenuItem>
@@ -108,11 +103,11 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
         </div>
       </div>
       {list && list.length > 0 ? (
-        list.map((issue, index) => (
+        list.map(issue => (
           <IssueCard
             key={issue.id}
-            title={issue.title}
-            tags={issue.tags}
+            summary={issue.summary}
+            tags={issue.tags || []}
             onClick={onCardClick}
             assignedTo={issue.assignedTo}
           />
@@ -125,8 +120,7 @@ export default ({ title, list, onCreate, onMove }: IssueCardsColumnProps) => {
         variant="contained"
         color="default"
         onClick={onCreate}
-        startIcon={<AddIcon />}
-      >
+        startIcon={<AddIcon />}>
         Create
       </Button>
     </div>
