@@ -41,7 +41,7 @@ interface IssueCardProps extends IssueCardType {
 export default ({ summary, tags, assignedTo, onClick, id, index }: IssueCardProps) => {
   const classes = useStyles();
   return (
-    <Draggable draggableId={`draggable-${id || 0}`} index={index || 0} type="ISSUE">
+    <Draggable draggableId={`draggable-${id}`} index={index} type="ISSUE">
       {(provided, snapshot) => (
         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
           <Card className={classes.cardContainer}>

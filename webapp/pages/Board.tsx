@@ -1,23 +1,51 @@
-import React, { useMemo } from 'react';
-import { useQuery } from '@apollo/client';
+import React, { useCallback, useMemo } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 
-import { GET_CURRENT_SPRINT } from '../gqls/queries';
+import { GET_CURRENT_SPRINT, MOVE_ISSUE } from '../gqls';
 import SprintBoard from '../components/SprintBoard/SprintBoard';
+import { DragDataType } from '../components/SprintBoard/BoardBody';
 
 const Board = function () {
   const { loading, error, data } = useQuery(GET_CURRENT_SPRINT);
 
-  const issuesByStatusKey = useMemo(() => {
-    return (data?.getCurrentSprint.issues || [])
-      .filter(issue => issue.type !== 'Sub-task')
-      .reduce(
-        (accumulator, current) => {
-          accumulator[current.status].push(current);
-          return accumulator;
-        },
-        { 'To Do': [], 'In Progress': [], Done: [] }
-      );
+  const [mutate] = useMutation(MOVE_ISSUE);
+
+  const columns = useMemo(() => {
+    if (data?.getCurrentSprint) {
+      return data.getCurrentSprint.configuration.columns.map(column => {
+        return {
+          id: column,
+          title: column,
+          list: data.getCurrentSprint.issues.filter(issue => issue.status === column)
+        };
+      });
+    }
+    return [];
   }, [data?.getCurrentSprint]);
+
+  const issueByKey = useMemo(() => {
+    if (data?.getCurrentSprint) {
+      return data.getCurrentSprint.issues.reduce((prev, current) => {
+        prev[current.id] = current;
+        return prev;
+      }, {});
+    }
+    return [];
+  }, [data?.getCurrentSprint]);
+
+  const getTransitionIdFromIssue = useCallback((issue: any, transitionName: string) => {
+    const transition = issue.transitions.find(transition => transition.name === transitionName);
+    return transition.id;
+  }, []);
+
+  const moveIssue = useCallback(
+    (data: DragDataType) => {
+      const transitionId = getTransitionIdFromIssue(issueByKey[data.cardId], data.destination.id);
+
+      mutate({ variables: { issueId: data.cardId, transitionId } }).catch(console.log);
+    },
+    [mutate, issueByKey]
+  );
 
   if (loading) {
     return <h1>Loading...</h1>;
@@ -27,16 +55,7 @@ const Board = function () {
     return <h1>Error</h1>;
   }
 
-  return (
-    <SprintBoard
-      columnsList={[
-        { id: 1, title: 'To Do', list: issuesByStatusKey['To Do'] },
-        { id: 2, title: 'In Progress', list: issuesByStatusKey['In Progress'] },
-        { id: 3, title: 'Done', list: issuesByStatusKey['Done'] }
-      ]}
-      projectMembers={[]}
-    />
-  );
+  return <SprintBoard columnsList={columns} projectMembers={[]} onDragEnd={moveIssue} />;
 };
 
 export default Board;

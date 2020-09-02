@@ -1,9 +1,24 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import IssueCardsColumn, { CardsColumnType } from '../IssueCardsColumn/IssueCardsColumn';
 import { DragDropContext } from 'react-beautiful-dnd';
+
+import IssueCardsColumn, { CardsColumnType } from '../IssueCardsColumn/IssueCardsColumn';
+
+interface DroppableColumn {
+  id: string;
+  index: number;
+}
+
+export interface DragDataType {
+  cardId: string;
+  source: DroppableColumn;
+  destination: DroppableColumn;
+}
+
+export type onDragEndEvent = (data: DragDataType) => void;
 
 interface BoardBodyProps {
   columnsList: CardsColumnType[];
+  onDragEnd?: onDragEndEvent;
 }
 
 const reorder = (list, startIndex, endIndex) => {
@@ -27,7 +42,7 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-export default ({ columnsList }: BoardBodyProps) => {
+export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
   const [list, setList] = useState(columnsList);
   useEffect(() => {
     setList(columnsList);
@@ -40,7 +55,7 @@ export default ({ columnsList }: BoardBodyProps) => {
     },
     [list]
   );
-  const onDragEnd = useCallback(
+  const onIssueDragEnd = useCallback(
     result => {
       const { source, destination } = result;
 
@@ -61,20 +76,35 @@ export default ({ columnsList }: BoardBodyProps) => {
           setList(newList);
         }
       } else {
-        const result = move(getList(source.droppableId), getList(destination.droppableId), source, destination);
+        const moveResult = move(getList(source.droppableId), getList(destination.droppableId), source, destination);
         const newList = list.map(column => {
-          if (`droppable-${column.id}` === source.droppableId) return { ...column, list: result[source.droppableId] };
+          if (`droppable-${column.id}` === source.droppableId)
+            return { ...column, list: moveResult[source.droppableId] };
           else if (`droppable-${column.id}` === destination.droppableId)
-            return { ...column, list: result[destination.droppableId] };
+            return { ...column, list: moveResult[destination.droppableId] };
           else return column;
         });
         setList(newList);
+
+        const dragData: DragDataType = {
+          cardId: result.draggableId.replace('draggable-', ''),
+          source: {
+            id: result.source.droppableId.replace('droppable-', ''),
+            index: result.source.index
+          },
+          destination: {
+            id: result.destination.droppableId.replace('droppable-', ''),
+            index: result.destination?.index
+          }
+        };
+
+        onDragEnd && onDragEnd(dragData);
       }
     },
     [list]
   );
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onIssueDragEnd}>
       <div
         style={{
           display: 'flex',

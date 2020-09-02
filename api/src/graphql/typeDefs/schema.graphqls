@@ -34,6 +34,10 @@ type Mutation {
   moveIssue(issueId: ID!, transitionId: ID!): Boolean
 }
 
+type BoardConfiguration {
+  columns: [String!]!
+}
+
 type Sprint {
   id: ID!
   name: String!
@@ -43,6 +47,7 @@ type Sprint {
   goal: String
   self: String!
   issues: [Issue!]!
+  configuration: BoardConfiguration!
 }
 
 type Issue {

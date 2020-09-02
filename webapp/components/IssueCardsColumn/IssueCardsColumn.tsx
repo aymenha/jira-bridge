@@ -104,7 +104,7 @@ export default ({ title, list, onCreate, id }: IssueCardsColumnProps) => {
           )}
         </div>
       </div>
-      <Droppable droppableId={`droppable-${id || 0}`} type="ISSUE">
+      <Droppable droppableId={`droppable-${title}`} type="ISSUE">
         {(provided, snapshot) => (
           <div className={classes.columnBody} ref={provided.innerRef} {...provided.droppableProps}>
             <div className={classes.cardsContainer}>
