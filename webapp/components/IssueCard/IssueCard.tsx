@@ -27,25 +27,45 @@ const useStyles = makeStyles({
     justifyContent: 'flex-start'
   }
 });
-interface SubTask {
-  title: string;
-  onwer: Member;
+
+interface Task {
+  summary: string;
+  author: Member;
   isCompleted: boolean;
 }
+
 export interface IssueCardType {
-  id: number;
+  id: string;
   summary: string;
+  description: string | null;
   tags?: string[];
+  createdAt: string;
+  dueDate: string | null;
+  authorName: string;
+  reporterName?: string;
   assignedTo?: Member[];
-  subTasks?: SubTask[];
+  subTasks?: Task[];
 }
+
 interface IssueCardProps extends IssueCardType {
   onClick: () => void;
   key?: string;
   index?: number;
 }
 
-export default ({ summary, id, index, tags = [], assignedTo = [], subTasks = [] }: IssueCardProps) => {
+export default ({
+  id,
+  summary,
+  description,
+  index,
+  tags = [],
+  assignedTo = [],
+  createdAt,
+  dueDate,
+  authorName,
+  reporterName,
+  subTasks = []
+}: IssueCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const classes = useStyles();
 
@@ -82,7 +102,7 @@ export default ({ summary, id, index, tags = [], assignedTo = [], subTasks = [] 
       <IssueCardDetails
         isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
-        issue={{ summary, id, assignedTo, subTasks }}
+        issue={{ id, summary, description, authorName, reporterName, createdAt, dueDate, subTasks }}
       />
     </>
   );

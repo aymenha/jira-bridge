@@ -56,13 +56,18 @@ const Assignees = ({ assignedTo }) => {
 
 const IssueSubTasks = ({ subTasks }) => {
   const classes = useStyles();
+
+  if (!subTasks?.length) {
+    return null;
+  }
+
   return (
     <div>
       <p>Checklist</p>
       <ul>
         {subTasks.map(task => (
-          <li className={classes.subTaskContainer}>
-            <Checkbox checked={task.isCompleted} /> <Typography> {task.title}</Typography>{' '}
+          <li key={task.id} className={classes.subTaskContainer}>
+            <Checkbox checked={task.isCompleted} /> <Typography> {task.summary}</Typography>
           </li>
         ))}
       </ul>
@@ -72,30 +77,35 @@ const IssueSubTasks = ({ subTasks }) => {
 
 export default ({ isOpen, issue, handleClose }) => {
   const classes = useStyles();
+
   return (
     <Modal
       open={isOpen}
       onClose={handleClose}
       aria-labelledby="issue-card-details"
       aria-describedby="issue-card-details-description">
-      <Grid container className={classes.container} spacing={0} xs={6}>
+      <Grid container className={classes.container} spacing={0}>
         <Grid item xs={8} className={classes.informationContainer}>
           <h2>{issue.summary}</h2>
           <p>{issue.description}</p>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div>
               <Typography>Due date</Typography>
-              <Typography>{issue.due_date}</Typography>
+              <Typography>{issue.dueDate || 'N/A'}</Typography>
             </div>
             <div>
-              <p>owner</p>
+              <Typography>Author</Typography>
+              <Typography>{issue.authorName}</Typography>
+
+              <Typography>Reporter</Typography>
+              <Typography>{issue.reporterName}</Typography>
             </div>
           </div>
           <IssueSubTasks subTasks={issue.subTasks} />
         </Grid>
         <Grid item xs={4} className={classes.settingsContainer}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton color="primary" aria-label="upload picture" component="span">
+            <IconButton color="primary" aria-label="upload picture" component="span" onClick={handleClose}>
               <CloseIcon />
             </IconButton>
           </div>
