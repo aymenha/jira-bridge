@@ -10,6 +10,10 @@ class JiraApi extends RESTDataSource {
     request.headers.set('Authorization', process.env.JIRA_TOKEN);
   }
 
+  async getBoardConfiguration(boardId: number) {
+    return this.get(`rest/agile/1.0/board/${boardId}/configuration`);
+  }
+
   async getSprints(): Promise<any> {
     return this.get('rest/agile/1.0/board/2/sprint');
   }
@@ -22,8 +26,8 @@ class JiraApi extends RESTDataSource {
     return this.get(`rest/api/3/issue/${issueId}/transitions`);
   }
 
-  async moveIssue(issueId: number, transitionId): Promise<any> {
-    const body = { transition: { id: transitionId } };
+  async moveIssue(issueId: number, transitionId: string): Promise<any> {
+    const body = { transition: { id: parseInt(transitionId, 10) } };
 
     return this.post(`rest/api/3/issue/${issueId}/transitions`, body);
   }

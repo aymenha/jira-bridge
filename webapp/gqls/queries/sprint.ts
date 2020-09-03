@@ -8,6 +8,9 @@ const GET_SPRINTS = gql`
       startDate
       endDate
       state
+      configuration {
+        columns
+      }
       issues {
         id
         key
@@ -15,6 +18,10 @@ const GET_SPRINTS = gql`
         type
         priority
         status
+        transitions {
+          id
+          name
+        }
       }
     }
   }
@@ -28,6 +35,9 @@ const GET_CURRENT_SPRINT = gql`
       startDate
       endDate
       state
+      configuration {
+        columns
+      }
       issues {
         id
         key
@@ -35,6 +45,10 @@ const GET_CURRENT_SPRINT = gql`
         type
         priority
         status
+        transitions {
+          id
+          name
+        }
       }
     }
   }

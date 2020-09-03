@@ -1,21 +1,23 @@
 import React, { useCallback, useState } from 'react';
 
-import {
-  Button,
-  Typography,
-  makeStyles,
-  MenuItem,
-  IconButton,
-  Menu,
-  Chip,
-  capitalize
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import { Button, Typography, makeStyles, MenuItem, IconButton, Menu, Chip, capitalize } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import { Droppable } from 'react-beautiful-dnd';
 
 import IssueCard, { IssueCardType } from '../IssueCard/IssueCard';
 
 const useStyles = makeStyles({
+  columnBody: {
+    minHeight: 400,
+    minWidth: 220,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch'
+  },
+  cardsContainer: {
+    flex: 1
+  },
   headerContainer: {
     display: 'flex',
     alignItems: 'center'
@@ -56,12 +58,13 @@ export interface CardsColumnType {
   id: number;
   title: string;
   list?: IssueCardType[];
+  index?: number;
 }
 interface IssueCardsColumnProps extends CardsColumnType {
   onCreate: () => void;
 }
 
-export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
+export default ({ title, list, onCreate, id }: IssueCardsColumnProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const classes = useStyles();
@@ -76,7 +79,6 @@ export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
   const handleMenuClose = useCallback(() => {
     setIsMenuOpen(false);
   }, [isMenuOpen]);
-
   return (
     <div>
       <div className={classes.headerContainer}>
@@ -102,27 +104,37 @@ export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
           )}
         </div>
       </div>
-      {list && list.length > 0 ? (
-        list.map(issue => (
-          <IssueCard
-            key={issue.id}
-            summary={issue.summary}
-            tags={issue.tags || []}
-            onClick={onCardClick}
-            assignedTo={issue.assignedTo}
-          />
-        ))
-      ) : (
-        <p className={classes.emptyList}>Drop new issues here</p>
-      )}
-      <Button
-        className={classes.createButton}
-        variant="contained"
-        color="default"
-        onClick={onCreate}
-        startIcon={<AddIcon />}>
-        Create
-      </Button>
+      <Droppable droppableId={`droppable-${title}`} type="ISSUE">
+        {(provided, snapshot) => (
+          <div className={classes.columnBody} ref={provided.innerRef} {...provided.droppableProps}>
+            <div className={classes.cardsContainer}>
+              {list && list.length > 0 ? (
+                list.map((issue, index) => (
+                  <IssueCard
+                    index={index}
+                    id={issue.id}
+                    key={issue.id.toString()}
+                    summary={issue.summary}
+                    tags={issue.tags || []}
+                    onClick={onCardClick}
+                    assignedTo={issue.assignedTo}
+                  />
+                ))
+              ) : (
+                <p className={classes.emptyList}>Drop new issues here</p>
+              )}
+            </div>
+            <Button
+              className={classes.createButton}
+              variant="contained"
+              color="default"
+              onClick={onCreate}
+              startIcon={<AddIcon />}>
+              Create
+            </Button>
+          </div>
+        )}
+      </Droppable>
     </div>
   );
 };

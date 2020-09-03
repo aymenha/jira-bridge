@@ -1,11 +1,11 @@
-import React, { useCallback } from "react";
+import React, { useCallback } from 'react';
 
-import { lighten, Chip, makeStyles } from "@material-ui/core";
+import { lighten, Chip, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   tagStyle: {
-    fontWeight: "bold",
-    border: "none",
+    fontWeight: 'bold',
+    border: 'none',
     marginRight: 5
   }
 }));
@@ -13,10 +13,10 @@ const useStyles = makeStyles(theme => ({
 interface TagProps {
   name: string;
   color?: string; // Hex
-  size?: "small" | "medium";
+  size?: 'small' | 'medium';
 }
 
-export default ({ name, color, size = "small" }: TagProps) => {
+export default ({ name, color, size = 'small' }: TagProps) => {
   const classes = useStyles();
   return (
     <Chip
@@ -25,13 +25,8 @@ export default ({ name, color, size = "small" }: TagProps) => {
       variant="outlined"
       className={classes.tagStyle}
       style={{
-        backgroundColor:
-          color && color.startsWith("#")
-            ? lighten(color, 60)
-            : color
-            ? color
-            : "grey",
-        color: color && color.startsWith("#") ? color : "white"
+        backgroundColor: color && color.startsWith('#') ? lighten(color, 0.7) : color ? color : 'grey',
+        color: color && color.startsWith('#') ? color : 'white'
       }}
     />
   );

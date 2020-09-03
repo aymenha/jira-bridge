@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Member } from "../MemberAvatarGroup/MemberAvatarGroup";
-import { CardsColumnType } from "../IssueCardsColumn/IssueCardsColumn";
-import BoardHeader from "./BoardHeader";
-import BoardBody from "./BoardBody";
+import React, { useState, useCallback } from 'react';
+import { Member } from '../MemberAvatarGroup/MemberAvatarGroup';
+import { CardsColumnType } from '../IssueCardsColumn/IssueCardsColumn';
+import BoardHeader from './BoardHeader';
+import BoardBody, { onDragEndEvent } from './BoardBody';
 
 interface SprintBoardProps {
   columnsList: CardsColumnType[];
   projectMembers: Member[];
+  onDragEnd?: onDragEndEvent;
 }
-export default ({ columnsList, projectMembers }: SprintBoardProps) => {
+
+export default ({ columnsList, projectMembers, onDragEnd }: SprintBoardProps) => {
   const [members, setMembers] = useState(projectMembers);
 
   const addMember = useCallback(
@@ -33,7 +35,7 @@ export default ({ columnsList, projectMembers }: SprintBoardProps) => {
         onAddMember={addMember}
         onRemoveMember={removeMember}
       />
-      <BoardBody columnsList={columnsList} />
+      <BoardBody columnsList={columnsList} onDragEnd={onDragEnd} />
     </React.Fragment>
   );
 };

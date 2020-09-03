@@ -44,7 +44,7 @@ const FakeColumnsList = [
         tags: [' api'],
         assignedTo: [
           {
-            id: 13,
+            id: 21,
             name: 'Fakher Gh',
             picture: 'https://ca.slack-edge.com/T1EHPUWM8-UFWL9UUF3-5cbfb7d112af-512'
           }
@@ -55,7 +55,7 @@ const FakeColumnsList = [
   {
     id: 3,
     title: 'completed',
-    list: [{ id: 31, summary: 'completed 1', tags: ['DB'], assignedTo: [{ name: 'Mohamed Aymen Hammemi', id: 12 }] }]
+    list: [{ id: 31, summary: 'completed 1', tags: ['DB'], assignedTo: [{ name: 'Mohamed Aymen Hammemi', id: 31 }] }]
   },
   {
     id: 4,
@@ -65,9 +65,10 @@ const FakeColumnsList = [
   {
     id: 5,
     title: 'Accepted',
-    list: [{ id: 51, summary: 'Accepted task', tags: [], assignedTo: [{ name: 'Mohamed Aymen Hammemi', id: 12 }] }]
+    list: [{ id: 51, summary: 'Accepted task', tags: [], assignedTo: [{ name: 'Mohamed Aymen Hammemi', id: 51 }] }]
   }
 ];
+
 export const Default = () => <SprintBoard columnsList={FakeColumnsList} projectMembers={FakeProjectMembers} />;
 export default {
   title: 'SprintBoard',
