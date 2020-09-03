@@ -1,8 +1,17 @@
 import React, { useCallback, useState, useEffect } from 'react';
+
+import { makeStyles } from '@material-ui/core';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import IssueCardsColumn, { CardsColumnType } from '../IssueCardsColumn/IssueCardsColumn';
 
+const useStyles = makeStyles({
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  }
+});
 interface DroppableColumn {
   id: string;
   index: number;
@@ -43,7 +52,9 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 
 export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
-  const [list, setList] = useState(columnsList);
+  const [list, setList]: [CardsColumnType[], Function] = useState(columnsList);
+  const classes = useStyles();
+
   useEffect(() => {
     setList(columnsList);
   }, [columnsList]);
@@ -105,12 +116,7 @@ export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
   );
   return (
     <DragDropContext onDragEnd={onIssueDragEnd}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around'
-        }}>
+      <div className={classes.container}>
         {list.map(column => (
           <IssueCardsColumn
             key={column.id}
