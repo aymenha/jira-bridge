@@ -24,6 +24,7 @@ type Query {
 
   #Issue
   getSprintIssues(sprintId: ID!): [Issue!]!
+  getIssue(issueId: ID!): Issue!
 
   #Transition
   getTransitions(issueId: ID!): [Transition!]!
@@ -32,6 +33,12 @@ type Query {
 type Mutation {
   #Issue
   moveIssue(issueId: ID!, transitionId: ID!): Boolean
+}
+
+type User {
+  id: ID!
+  displayName: String!
+  emailAddress: String!
 }
 
 type BoardConfiguration {
@@ -55,9 +62,16 @@ type Issue {
   key: String!
   summary: String!
   type: String!
+  description: String
   priority: IssuePriority!
   status: String!
   transitions: [Transition!]!
+  reporter: User
+  author: User
+  subTasks: [Issue!]!
+  isSubTask: Boolean!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Transition {

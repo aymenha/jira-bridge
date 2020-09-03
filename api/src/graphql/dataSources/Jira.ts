@@ -22,6 +22,10 @@ class JiraApi extends RESTDataSource {
     return this.get(`rest/agile/1.0/sprint/${sprintId}/issue`);
   }
 
+  async getIssue(issueId: number): Promise<any> {
+    return this.get(`/rest/api/2/issue/${issueId}`);
+  }
+
   async getTransitions(issueId: number): Promise<any> {
     return this.get(`rest/api/3/issue/${issueId}/transitions`);
   }
