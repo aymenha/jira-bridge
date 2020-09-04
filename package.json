@@ -1,0 +1,20 @@
+{
+  "name": "jira-bridge-repo",
+  "version": "1.0.0",
+  "description": "Jira bridge app for a better UX",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "docker": "docker-compose up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aymenha/jira-bridge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aymenha/jira-bridge/issues"
+  },
+  "homepage": "https://github.com/aymenha/jira-bridge#readme"
+}
