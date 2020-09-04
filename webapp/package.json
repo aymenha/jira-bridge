@@ -7,7 +7,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "storybook": "start-storybook -p 6006 --ci",
+    "storybook": "start-storybook -p 6006 --ci --quiet",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
