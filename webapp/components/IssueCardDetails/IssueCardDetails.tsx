@@ -1,112 +1,190 @@
-import React from 'react';
-import { Modal, makeStyles, IconButton, Grid, Checkbox, Typography, Button } from '@material-ui/core';
-import { Close as CloseIcon, Add as AddIcon } from '@material-ui/icons';
+import React, { useState, useCallback } from 'react';
+
+import {
+  Modal,
+  makeStyles,
+  IconButton,
+  Grid,
+  Typography,
+  Button,
+  TextField,
+  Select,
+  MenuItem
+} from '@material-ui/core';
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+
+import IssueSubtasks from './IssueSubtasks';
+import Assignees from './Assignees';
+import { Member } from '../MemberAvatarGroup/MemberAvatarGroup';
+import { IssueCardType } from '../IssueCard/IssueCard';
 
 const useStyles = makeStyles({
+  modalContainer: {
+    height: '100%',
+    border: '1px solid red',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   container: {
     color: 'black',
+    width: '90%',
+    border: 'none'
+  },
+  informationContainer: {
     backgroundColor: 'white',
-    margin: 'auto'
+    padding: 10
+  },
+  summaryContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
   },
   settingsContainer: {
     backgroundColor: '#f0f2f1',
     color: '#707070',
     padding: 10
   },
-  informationContainer: {
-    padding: 10
+
+  title: {
+    color: '#979797',
+    fontWeight: 'bold'
   },
-  subTaskContainer: {
-    display: 'flex',
-    alignItems: 'center'
-  },
-  listItemsStyle: {}
+  closeIcon: {
+    color: '#979797'
+  }
 });
 
-const Assignees = ({ assignedTo }) => {
-  const classes = useStyles();
+interface IssueCardDetailsProps {
+  isOpen: boolean;
+  issue: IssueCardType;
+  handleClose: () => void;
+  projectMembers: Member[];
+  onUpdate: (updatedIssue: IssueCardType) => void;
+}
 
-  return (
-    <div>
-      <p>Assignees</p>
-      <ul className={classes.listItemsStyle}>
-        <li>
-          <Button variant="contained" color="default" startIcon={<AddIcon />}>
-            Add assignee
-          </Button>
-        </li>
-        {assignedTo &&
-          assignedTo.map(assignee => (
-            <li>
-              <div>
-                <img alt="" />
-              </div>
-              <div>{assignee.name}</div>
-              <div>
-                <IconButton>
-                  <CloseIcon />
-                </IconButton>
-              </div>
-            </li>
-          ))}
-      </ul>
-    </div>
+export default ({ isOpen, issue, handleClose, projectMembers, onUpdate }: IssueCardDetailsProps) => {
+  const [issueDetails, setIssueDetails] = useState(issue);
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(Date.now());
+
+  const handleDateChange = useCallback(
+    date => {
+      setIssueDetails({ ...issueDetails, dueDate: date.getDay() + '/' + date.getMonth() + '/' + date.getFullYear() });
+      setSelectedDate(date);
+    },
+    [issueDetails, selectedDate]
   );
-};
 
-const IssueSubTasks = ({ subTasks }) => {
+  const update = useCallback(() => {
+    setIsEditing(false);
+    onUpdate && onUpdate(issueDetails);
+  }, [isEditing, issueDetails]);
+
   const classes = useStyles();
-
-  if (!subTasks?.length) {
-    return null;
-  }
-
-  return (
-    <div>
-      <p>Checklist</p>
-      <ul>
-        {subTasks.map(task => (
-          <li key={task.id} className={classes.subTaskContainer}>
-            <Checkbox checked={task.isCompleted} /> <Typography> {task.summary}</Typography>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default ({ isOpen, issue, handleClose }) => {
-  const classes = useStyles();
-
   return (
     <Modal
       open={isOpen}
       onClose={handleClose}
+      className={classes.modalContainer}
       aria-labelledby="issue-card-details"
       aria-describedby="issue-card-details-description">
-      <Grid container className={classes.container} spacing={0}>
+      <Grid container className={classes.container} direction="row">
         <Grid item xs={8} className={classes.informationContainer}>
-          <h2>{issue.summary}</h2>
-          <p>{issue.description}</p>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <div>
-              <Typography>Due date</Typography>
-              <Typography>{issue.dueDate || 'N/A'}</Typography>
-            </div>
-            <div>
-              <Typography>Author</Typography>
-              <Typography>{issue.authorName}</Typography>
-
-              <Typography>Reporter</Typography>
-              <Typography>{issue.reporterName}</Typography>
-            </div>
+          <div className={classes.summaryContainer}>
+            {isEditing ? (
+              <TextField
+                value={issueDetails.summary}
+                onChange={e => setIssueDetails({ ...issue, summary: e.target.value })}
+              />
+            ) : (
+              <h1>{issueDetails.summary}</h1>
+            )}
+            <IconButton color="primary" aria-label="Edit" component="span" onClick={() => setIsEditing(!isEditing)}>
+              <EditIcon className={classes.closeIcon} />
+            </IconButton>
           </div>
-          <IssueSubTasks subTasks={issue.subTasks} />
+          {isEditing ? (
+            <TextField
+              multiline
+              value={issueDetails.description}
+              onChange={e => setIssueDetails({ ...issueDetails, description: e.target.value })}
+            />
+          ) : (
+            <p>{issueDetails.description}</p>
+          )}
+          <Grid container justify="space-between">
+            <Grid item xs={6}>
+              <div>
+                <Typography variant="overline" className={classes.title}>
+                  Due date
+                </Typography>
+              </div>
+              {isEditing ? (
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDatePicker
+                    disableToolbar
+                    variant="inline"
+                    format="MM/dd/yyyy"
+                    margin="normal"
+                    id="date-picker-inline"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    KeyboardButtonProps={{
+                      'aria-label': 'change date'
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              ) : (
+                <Typography>{issueDetails.dueDate || 'N/A'}</Typography>
+              )}
+            </Grid>
+            <Grid item xs={6} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+              <Typography variant="overline" className={classes.title}>
+                Author
+              </Typography>
+              <Typography>{issueDetails.authorName}</Typography>
+              <Typography variant="overline" className={classes.title}>
+                Reporter
+              </Typography>
+              {isEditing ? (
+                <div>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={issueDetails.reporterName}
+                    onChange={event =>
+                      setIssueDetails({ ...issueDetails, reporterName: event.target.value as string })
+                    }>
+                    <MenuItem value={issueDetails.reporterName}>{issueDetails.reporterName}</MenuItem>
+                    {projectMembers &&
+                      projectMembers.map((member, index) => (
+                        <MenuItem key={index.toString()} value={member.name}>
+                          {member.name}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </div>
+              ) : (
+                <Typography>{issueDetails.reporterName}</Typography>
+              )}
+            </Grid>
+          </Grid>
+          <IssueSubtasks subTasks={issue.subTasks} />
+          {isEditing && (
+            <div style={{ display: 'flex', flex: 1, justifyContent: 'flex-end' }}>
+              <Button onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button variant="contained" color="primary" onClick={update}>
+                Update
+              </Button>
+            </div>
+          )}
         </Grid>
         <Grid item xs={4} className={classes.settingsContainer}>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <IconButton color="primary" aria-label="upload picture" component="span" onClick={handleClose}>
-              <CloseIcon />
+              <CloseIcon className={classes.closeIcon} />
             </IconButton>
           </div>
           <Assignees assignedTo={issue.assignedTo} />

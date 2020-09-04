@@ -45,6 +45,7 @@ export interface IssueCardType {
   reporterName?: string;
   assignedTo?: Member[];
   subTasks?: Task[];
+  projectMembers?: Member[];
 }
 
 interface IssueCardProps extends IssueCardType {
@@ -64,7 +65,8 @@ export default ({
   dueDate,
   authorName,
   reporterName,
-  subTasks = []
+  subTasks = [],
+  projectMembers
 }: IssueCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const classes = useStyles();
@@ -72,6 +74,11 @@ export default ({
   const onClick = useCallback(() => {
     setIsModalOpen(true);
   }, [isModalOpen]);
+
+  const updateIssue = useCallback(updatedIssue => {
+    // update here
+    setIsModalOpen(false);
+  }, []);
   return (
     <>
       <Draggable draggableId={`draggable-${id}`} index={index} type="ISSUE">
@@ -100,6 +107,8 @@ export default ({
         )}
       </Draggable>
       <IssueCardDetails
+        projectMembers={projectMembers || []}
+        onUpdate={updateIssue}
         isOpen={isModalOpen}
         handleClose={() => setIsModalOpen(false)}
         issue={{ id, summary, description, authorName, reporterName, createdAt, dueDate, subTasks }}
