@@ -1,0 +1,20 @@
+FROM node:14-alpine as base
+WORKDIR /app
+COPY package.json yarn.lock ./
+
+FROM base as dependencies
+RUN yarn --pure-lockfile --prefer-offline --production
+RUN mv node_modules node_modules_prod
+RUN yarn --pure-lockfile --prefer-offline
+
+FROM dependencies as build
+COPY ./ .
+RUN yarn build
+
+FROM base as production
+RUN apk add --no-cache tini
+ENTRYPOINT ["/sbin/tini", "--"]
+COPY --from=build /app/dist /app
+COPY --from=dependencies /app/node_modules_prod /app/node_modules
+CMD [ "node", "index.js" ]
+EXPOSE 5000
