@@ -5,10 +5,11 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "next start",
     "storybook": "start-storybook -p 6006 --ci --quiet",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "docker-build": "docker build --network=host --tag jira-bridge:webapp --target=production --force-rm ."
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
@@ -17,7 +18,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "graphql": "^15.3.0",
-    "next": "^9.4.0",
+    "next": "^9.5.3",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1"
