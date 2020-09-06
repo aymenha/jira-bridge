@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Card, Typography, CardContent, makeStyles, Avatar, capitalize } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
+import { useMutation } from '@apollo/client';
 
+import { UPDATE_ISSUE } from '../../gqls/mutation';
 import TagsContainer from '../TagsContainer/TagsContainer';
 import MemberAvatarGroup, { Member } from '../MemberAvatarGroup/MemberAvatarGroup';
 import IssueCardDetails from '../IssueCardDetails/IssueCardDetails';
@@ -71,13 +73,25 @@ export default ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const classes = useStyles();
 
+  const onCompleted = useCallback(() => {
+    console.log('issue updated');
+  }, []);
+
+  const onError = useCallback(error => {
+    console.log(error);
+  }, []);
+
+  const [mutate] = useMutation(UPDATE_ISSUE, { onCompleted, onError });
+
   const onClick = useCallback(() => {
     setIsModalOpen(true);
   }, [isModalOpen]);
 
-  const updateIssue = useCallback(updatedIssue => {
-    // update here
+  const updateIssue = useCallback(data => {
+    const { id, summary, description, dueDate } = data;
+
     setIsModalOpen(false);
+    mutate({ variables: { issueId: id, input: { summary, description, dueDate } } });
   }, []);
   return (
     <>
