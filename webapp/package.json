@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "storybook": "start-storybook -p 6006 --ci --quiet",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prettier:write": "prettier -w ."
   },
   "dependencies": {
     "@apollo/client": "^3.1.4",
@@ -31,6 +32,7 @@
     "@types/storybook__react": "^5.2.1",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
+    "prettier": "^2.1.1",
     "storybook-host": "^5.1.0",
     "typescript": "^3.9.2"
   }
