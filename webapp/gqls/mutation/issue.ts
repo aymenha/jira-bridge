@@ -6,4 +6,10 @@ const MOVE_ISSUE = gql`
   }
 `;
 
-export { MOVE_ISSUE };
+const UPDATE_ISSUE = gql`
+  mutation update($issueId: ID!, $input: UpdateIssueInput!) {
+    updateIssue(issueId: $issueId, input: $input)
+  }
+`;
+
+export { MOVE_ISSUE, UPDATE_ISSUE };
