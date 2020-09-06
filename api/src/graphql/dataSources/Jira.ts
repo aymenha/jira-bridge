@@ -35,6 +35,10 @@ class JiraApi extends RESTDataSource {
 
     return this.post(`rest/api/3/issue/${issueId}/transitions`, body);
   }
+
+  async updateIssue(issueId: number, data: any): Promise<any> {
+    return this.put(`rest/api/2/issue/${issueId}`, data);
+  }
 }
 
 export default JiraApi;
