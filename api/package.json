@@ -7,7 +7,8 @@
     "dev": "nodemon -e ts,graphqls --watch src --exec babel-node src/index.ts --extensions \".ts\"",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "build": "babel src --out-dir dist --extensions '.ts' --copy-files"
+    "build": "babel src --out-dir dist --extensions '.ts' --copy-files",
+    "docker-build": "docker build --network=host --tag jira-bridge:api --target=production --force-rm ."
   },
   "keywords": [],
   "author": "Mohamed Aymen Hammami",
