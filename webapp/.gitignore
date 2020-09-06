@@ -11,6 +11,7 @@
 # production
 /build
 /dist
+/out
 /.next
 /storybook-static
 
