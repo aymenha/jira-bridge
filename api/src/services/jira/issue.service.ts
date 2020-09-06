@@ -1,4 +1,4 @@
-import { getInstance } from "./jira.service";
+import { getInstance } from './jira.service';
 
 interface IssueService {
   getIssue(issueId: string): Promise<Issue>;

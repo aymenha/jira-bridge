@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { boardService } from "../services/jira/board.service";
+import { Router } from 'express';
+import { boardService } from '../services/jira/board.service';
 
 const router = Router({ mergeParams: true });
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     const boards = await boardService.getBoards();
     res.json({ ok: true, data: boards });
@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const boardId = req.params.id;
     const board = await boardService.getBoard(boardId);
@@ -22,7 +22,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.get("/:id/issues", async (req, res, next) => {
+router.get('/:id/issues', async (req, res, next) => {
   try {
     const boardId = req.params.id;
     const issues = await boardService.getBoardIssues(boardId);
@@ -32,7 +32,7 @@ router.get("/:id/issues", async (req, res, next) => {
   }
 });
 
-router.get("/:id/sprints", async (req, res, next) => {
+router.get('/:id/sprints', async (req, res, next) => {
   try {
     const boardId = req.params.id;
     const sprints = await boardService.getBoardSprints(boardId);

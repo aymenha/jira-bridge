@@ -1,7 +1,7 @@
 const sprintStatesByKey = {
   closed: 'closed',
   active: 'active',
-  future: 'future'
+  future: 'future',
 };
 
 export { sprintStatesByKey };

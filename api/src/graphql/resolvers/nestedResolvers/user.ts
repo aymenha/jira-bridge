@@ -1,3 +1,3 @@
 export default {
-    id: parent => parent.accountId
+  id: parent => parent.accountId,
 };

@@ -1,4 +1,4 @@
-import { getInstance } from "./jira.service";
+import { getInstance } from './jira.service';
 
 interface BoardService {
   getBoards(): Promise<Board[]>;
@@ -15,7 +15,7 @@ async function getBoards(): Promise<Board[]> {
 
 async function getBoard(boardId: string): Promise<Board> {
   const res = await getInstance().board.getBoard({ boardId });
-  console.log("!!!", Object.keys(res));
+  console.log('!!!', Object.keys(res));
   return res;
 }
 
@@ -30,7 +30,7 @@ async function getBoardIssues(boardId: string): Promise<Issue[]> {
   const { total, issues } = await getInstance().board.getIssuesForBoard({
     boardId,
   });
-  return issues.map((issue) => {
+  return issues.map(issue => {
     return {
       id: issue.id,
       key: issue.key,
@@ -102,7 +102,7 @@ function mapUser(value): User {
 }
 
 function mapAvatarUrl(value): string {
-  return value ? value["48x48"] : null;
+  return value ? value['48x48'] : null;
 }
 
 function mapStatus(value): IssueStatus {
