@@ -1,0 +1,10 @@
+FROM node:14-alpine as build
+WORKDIR /app
+COPY package.json yarn.lock ./
+RUN yarn --pure-lockfile --prefer-offline
+COPY ./ .
+RUN yarn build
+
+FROM nginx:alpine as production
+WORKDIR /usr/share/nginx/html
+COPY --from=build /app/out . 
