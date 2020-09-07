@@ -62,9 +62,10 @@ export interface CardsColumnType {
 }
 interface IssueCardsColumnProps extends CardsColumnType {
   onCreate: () => void;
+  setNewIssueSummary: (summary: string) => void;
 }
 
-export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
+export default ({ title, list, onCreate, setNewIssueSummary }: IssueCardsColumnProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const classes = useStyles();
@@ -124,6 +125,7 @@ export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
                     createdAt={issue.createdAt}
                     dueDate={issue.dueDate}
                     subTasks={issue.subTasks}
+                    setNewIssueSummary={setNewIssueSummary}
                   />
                 ))
               ) : (
