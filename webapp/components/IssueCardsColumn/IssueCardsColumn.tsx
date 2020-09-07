@@ -120,7 +120,7 @@ export default ({ title, list, onCreate, setNewIssueSummary }: IssueCardsColumnP
                     tags={issue.tags}
                     onClick={onCardClick}
                     assignedTo={issue.assignedTo}
-                    authorName={issue.author.displayName}
+                    authorName={issue.author?.displayName}
                     reporterName={issue.reporter?.displayName}
                     createdAt={issue.createdAt}
                     dueDate={issue.dueDate}

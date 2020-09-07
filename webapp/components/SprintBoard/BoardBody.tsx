@@ -134,7 +134,13 @@ export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
       let issuesList = columnsList[index].list;
       if (issuesList) {
         const lastIndex = issuesList.length - 1;
-        issuesList[lastIndex] = { ...issuesList[lastIndex], summary };
+        if (summary) {
+          //Add summary to new created card
+          issuesList[lastIndex] = { ...issuesList[lastIndex], summary };
+        } else {
+          //delete new created card when summary is empty
+          issuesList.splice(lastIndex, 1);
+        }
         columnsList[index].list = [...issuesList];
         setList(columnsList);
       }

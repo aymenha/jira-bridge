@@ -1,13 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import {
-  Card,
-  Typography,
-  CardContent,
-  makeStyles,
-  Avatar,
-  capitalize,
-  TextField
-} from '@material-ui/core';
+import { Card, Typography, CardContent, makeStyles, Avatar, capitalize, TextField } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 
@@ -78,10 +70,19 @@ export default ({
   reporterName,
   subTasks = [],
   projectMembers,
-                  setNewIssueSummary
+  setNewIssueSummary
 }: IssueCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const classes = useStyles();
+
+  const onSummaryValidation = useCallback(
+    e => {
+      if (e.keyCode == 13 || e.type === 'blur') {
+        setNewIssueSummary(e.target.value);
+      }
+    },
+    [setNewIssueSummary]
+  );
 
   const onCompleted = useCallback(() => {
     console.log('issue updated');
@@ -104,12 +105,6 @@ export default ({
     mutate({ variables: { issueId: id, input: { summary, description, dueDate } } });
   }, []);
 
-  const onSummaryValidation = useCallback(e => {
-    if (e.keyCode == 13 || e.type === 'blur') {
-      setNewIssueSummary(e.target.value);
-    }
-  }, []);
-
   return (
     <>
       <Draggable draggableId={`draggable-${id}`} index={index} type="ISSUE">
@@ -118,16 +113,16 @@ export default ({
             <Card className={classes.cardContainer} onClick={onClick}>
               <CardContent>
                 {summary ? (
-                    <Typography className={classes.title} color="textSecondary" gutterBottom variant="h6">
-                      {capitalize(summary)}
-                    </Typography>
+                  <Typography className={classes.title} color="textSecondary" gutterBottom variant="h6">
+                    {capitalize(summary)}
+                  </Typography>
                 ) : (
-                    <TextField
-                        autoFocus
-                        onKeyDown={onSummaryValidation}
-                        placeholder="issue name"
-                        onBlur={onSummaryValidation}
-                    />
+                  <TextField
+                    autoFocus
+                    onKeyDown={onSummaryValidation}
+                    placeholder="issue name"
+                    onBlur={onSummaryValidation}
+                  />
                 )}
                 <div
                   className={classes.actionsContainer}
