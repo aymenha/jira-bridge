@@ -2,15 +2,10 @@
  * Source: https://github.com/mui-org/material-ui/blob/master/examples/nextjs-with-typescript/pages/_document.tsx
  */
 
-import React from "react";
-import Document, {
-  DocumentContext,
-  Head,
-  Main,
-  NextScript
-} from "next/document";
-import { ServerStyleSheets } from "@material-ui/core/styles";
-import theme from "../theme";
+import React from 'react';
+import Document, { DocumentContext, Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/core/styles';
+import theme from '../theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -44,9 +39,6 @@ MyDocument.getInitialProps = async (ctx: DocumentContext) => {
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
-    styles: [
-      ...React.Children.toArray(initialProps.styles),
-      sheets.getStyleElement()
-    ]
+    styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()]
   };
 };

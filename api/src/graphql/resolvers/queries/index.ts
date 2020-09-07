@@ -5,5 +5,5 @@ import transition from './transition';
 export default {
   ...sprint,
   ...issue,
-  ...transition
+  ...transition,
 };

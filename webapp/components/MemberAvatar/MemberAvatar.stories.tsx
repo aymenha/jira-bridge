@@ -1,9 +1,9 @@
-import React from "react";
-import { host } from "storybook-host";
-import MemberAvatar from "./MemberAvatar";
+import React from 'react';
+import { host } from 'storybook-host';
+import MemberAvatar from './MemberAvatar';
 
 const Host = host({
-  align: "center middle",
+  align: 'center middle',
   background: true,
   backdrop: true
 });
@@ -24,6 +24,6 @@ export const Large = () => (
 );
 
 export default {
-  title: "MemberAvatar",
+  title: 'MemberAvatar',
   decorators: [Host]
 };

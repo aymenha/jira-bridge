@@ -7,5 +7,5 @@ export * from './dataSources';
 
 export default makeExecutableSchema({
   typeDefs,
-  resolvers
+  resolvers,
 });

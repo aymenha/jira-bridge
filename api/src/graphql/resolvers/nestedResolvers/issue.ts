@@ -11,5 +11,5 @@ export default {
   reporter: parent => parent.fields.reporter,
   isSubTask: parent => parent.fields.issuetype.subtask,
   createdAt: parent => parent.fields.created,
-  updatedAt: parent => parent.fields.updated
+  updatedAt: parent => parent.fields.updated,
 };

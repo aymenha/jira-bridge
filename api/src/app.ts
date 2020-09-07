@@ -7,7 +7,7 @@ const app = express();
 
 const apolloServer = new ApolloServer({
   schema,
-  dataSources: () => ({ jiraApi: new JiraApi() })
+  dataSources: () => ({ jiraApi: new JiraApi() }),
 });
 
 apolloServer.applyMiddleware({ app });

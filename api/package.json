@@ -7,7 +7,8 @@
     "dev": "nodemon -e ts,graphqls --watch src --exec babel-node src/index.ts --extensions \".ts\"",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
-    "build": "yarn run babel src --out-dir dist --extensions '.ts'"
+    "build": "yarn run babel src --out-dir dist --extensions '.ts'",
+    "prettier:write": "prettier -w ."
   },
   "keywords": [],
   "author": "Mohamed Aymen Hammami",
@@ -28,6 +29,7 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "jira-client": "^6.17.0",
-    "jira-connector": "^3.1.0"
+    "jira-connector": "^3.1.0",
+    "prettier": "^2.1.1"
   }
 }
