@@ -5,7 +5,7 @@ import AddIcon from '@material-ui/icons/Add';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { Droppable } from 'react-beautiful-dnd';
 
-import IssueCard, { IssueCardType } from '../IssueCard/IssueCard';
+import IssueCard from '../IssueCard/IssueCard';
 
 const useStyles = makeStyles({
   columnBody: {
@@ -57,14 +57,14 @@ const useStyles = makeStyles({
 export interface CardsColumnType {
   id: number;
   title: string;
-  list?: IssueCardType[];
+  list?: any[];
   index?: number;
 }
 interface IssueCardsColumnProps extends CardsColumnType {
   onCreate: () => void;
 }
 
-export default ({ title, list, onCreate, id }: IssueCardsColumnProps) => {
+export default ({ title, list, onCreate }: IssueCardsColumnProps) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const classes = useStyles();
@@ -105,7 +105,7 @@ export default ({ title, list, onCreate, id }: IssueCardsColumnProps) => {
         </div>
       </div>
       <Droppable droppableId={`droppable-${title}`} type="ISSUE">
-        {(provided, snapshot) => (
+        {provided => (
           <div className={classes.columnBody} ref={provided.innerRef} {...provided.droppableProps}>
             <div className={classes.cardsContainer}>
               {list && list.length > 0 ? (
@@ -113,11 +113,17 @@ export default ({ title, list, onCreate, id }: IssueCardsColumnProps) => {
                   <IssueCard
                     index={index}
                     id={issue.id}
-                    key={issue.id.toString()}
+                    key={issue.id}
                     summary={issue.summary}
-                    tags={issue.tags || []}
+                    description={issue.description}
+                    tags={issue.tags}
                     onClick={onCardClick}
                     assignedTo={issue.assignedTo}
+                    authorName={issue.author.displayName}
+                    reporterName={issue.reporter?.displayName}
+                    createdAt={issue.createdAt}
+                    dueDate={issue.dueDate}
+                    subTasks={issue.subTasks}
                   />
                 ))
               ) : (

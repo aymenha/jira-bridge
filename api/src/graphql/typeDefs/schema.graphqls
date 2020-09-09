@@ -39,7 +39,7 @@ type Mutation {
 type User {
   id: ID!
   displayName: String!
-  emailAddress: String!
+  emailAddress: String
 }
 
 type BoardConfiguration {
@@ -73,6 +73,7 @@ type Issue {
   isSubTask: Boolean!
   createdAt: String!
   updatedAt: String!
+  dueDate: String
 }
 
 type Transition {

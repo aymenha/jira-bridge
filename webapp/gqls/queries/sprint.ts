@@ -15,12 +15,25 @@ const GET_SPRINTS = gql`
         id
         key
         summary
+        description
         type
         priority
         status
+        createdAt
+        dueDate
+        author {
+          id
+          displayName
+          emailAddress
+        }
         transitions {
           id
           name
+        }
+        subTasks {
+          id
+          summary
+          status
         }
       }
     }
@@ -42,12 +55,30 @@ const GET_CURRENT_SPRINT = gql`
         id
         key
         summary
+        description
         type
         priority
         status
+        createdAt
+        dueDate
+        author {
+          id
+          displayName
+          emailAddress
+        }
+        reporter {
+          id
+          displayName
+          emailAddress
+        }
         transitions {
           id
           name
+        }
+        subTasks {
+          id
+          summary
+          status
         }
       }
     }

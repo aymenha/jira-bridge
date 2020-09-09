@@ -8,6 +8,19 @@ const GET_SPRINT_ISSUES = gql`
       summary
       type
       priority
+      description
+      author {
+        id
+        displayName
+        emailAddress
+      }
+      subTasks {
+        id
+        summary
+        status
+      }
+      createdAt
+      dueDate
     }
   }
 `;
