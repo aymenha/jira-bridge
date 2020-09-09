@@ -47,8 +47,23 @@ type BoardConfiguration {
   columns: [String!]!
 }
 
+type BoardLocation {
+  id: ID!
+  name: String!
+  displayName: String!
+  projectName: String!
+  projectKey: String!
+}
+
+type Board {
+  id: ID!
+  name: String!
+  location: BoardLocation!
+}
+
 type Sprint {
   id: ID!
+  board: Board!
   name: String!
   startDate: String!
   endDate: String!
