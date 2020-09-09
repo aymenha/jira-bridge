@@ -1,9 +1,10 @@
 import React, { useCallback, useState, useEffect } from 'react';
-
 import { makeStyles } from '@material-ui/core';
 import { DragDropContext } from 'react-beautiful-dnd';
+import { useMutation } from '@apollo/client';
 
 import IssueCardsColumn, { CardsColumnType } from '../IssueCardsColumn/IssueCardsColumn';
+import { GET_CURRENT_SPRINT, CREATE_ISSUE } from '../../gqls';
 
 const useStyles = makeStyles({
   container: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles({
     justifyContent: 'space-around'
   }
 });
+
 interface DroppableColumn {
   id: string;
   index: number;
@@ -26,6 +28,8 @@ export interface DragDataType {
 export type onDragEndEvent = (data: DragDataType) => void;
 
 interface BoardBodyProps {
+  sprintId: number;
+  projectId: number;
   columnsList: CardsColumnType[];
   onDragEnd?: onDragEndEvent;
 }
@@ -51,9 +55,20 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
+export default ({ columnsList, onDragEnd, sprintId, projectId }: BoardBodyProps) => {
   const [list, setList]: [CardsColumnType[], Function] = useState(columnsList);
   const classes = useStyles();
+
+  const update = useCallback((cache, { data: { createIssue } }) => {
+    const { getCurrentSprint } = cache.readQuery({ query: GET_CURRENT_SPRINT });
+    const currentSprint = { ...getCurrentSprint, issues: [...getCurrentSprint.issues, createIssue] };
+
+    cache.writeQuery({ query: GET_CURRENT_SPRINT, data: { getCurrentSprint: currentSprint } });
+
+    return cache;
+  }, []);
+
+  const [mutate] = useMutation(CREATE_ISSUE, { update });
 
   useEffect(() => {
     setList(columnsList);
@@ -137,6 +152,18 @@ export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
         if (summary) {
           //Add summary to new created card
           issuesList[lastIndex] = { ...issuesList[lastIndex], summary };
+
+          mutate({
+            variables: {
+              input: {
+                summary,
+                projectId,
+                sprintId,
+                issueTypeName: 'Task',
+                statusName: columnsList[index].id
+              }
+            }
+          }).catch(console.log);
         } else {
           //delete new created card when summary is empty
           issuesList.splice(lastIndex, 1);

@@ -8,6 +8,14 @@ const GET_SPRINTS = gql`
       startDate
       endDate
       state
+      board {
+        id
+        name
+        location {
+          id
+          name
+        }
+      }
       configuration {
         columns
       }
@@ -48,6 +56,14 @@ const GET_CURRENT_SPRINT = gql`
       startDate
       endDate
       state
+      board {
+        id
+        name
+        location {
+          id
+          name
+        }
+      }
       configuration {
         columns
       }

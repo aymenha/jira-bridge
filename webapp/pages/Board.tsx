@@ -55,7 +55,15 @@ const Board = function () {
     return <h1>Error</h1>;
   }
 
-  return <SprintBoard columnsList={columns} projectMembers={[]} onDragEnd={moveIssue} />;
+  return (
+    <SprintBoard
+      columnsList={columns}
+      projectMembers={[]}
+      onDragEnd={moveIssue}
+      sprintId={data.getCurrentSprint.id}
+      projectId={data.getCurrentSprint.board.location.id}
+    />
+  );
 };
 
 export default Board;
