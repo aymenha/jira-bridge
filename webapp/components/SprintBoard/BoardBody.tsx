@@ -114,16 +114,51 @@ export default ({ columnsList, onDragEnd }: BoardBodyProps) => {
     },
     [list]
   );
+  const onCreate = useCallback(
+    index => {
+      setList(
+        list.map((column, i) => {
+          if (i === index && column.list) {
+            const tempID = Date.now().toString();
+            return { ...column, list: [...column.list, { id: tempID, summary: '' }] };
+          } else return column;
+        })
+      );
+    },
+    [list]
+  );
+
+  const setNewIssueSummary = useCallback(
+    (summary, index) => {
+      let columnsList = [...list];
+      let issuesList = columnsList[index].list;
+      if (issuesList) {
+        const lastIndex = issuesList.length - 1;
+        if (summary) {
+          //Add summary to new created card
+          issuesList[lastIndex] = { ...issuesList[lastIndex], summary };
+        } else {
+          //delete new created card when summary is empty
+          issuesList.splice(lastIndex, 1);
+        }
+        columnsList[index].list = [...issuesList];
+        setList(columnsList);
+      }
+    },
+    [list]
+  );
+
   return (
     <DragDropContext onDragEnd={onIssueDragEnd}>
       <div className={classes.container}>
-        {list.map(column => (
+        {list.map((column, index) => (
           <IssueCardsColumn
             key={column.id}
             id={column.id}
             list={column.list || []}
             title={column.title}
-            onCreate={() => console.log('create card')}
+            onCreate={() => onCreate(index)}
+            setNewIssueSummary={summary => setNewIssueSummary(summary, index)}
           />
         ))}
       </div>

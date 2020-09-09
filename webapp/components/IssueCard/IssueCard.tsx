@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Card, Typography, CardContent, makeStyles, Avatar, capitalize } from '@material-ui/core';
+import { Card, Typography, CardContent, makeStyles, Avatar, capitalize, TextField } from '@material-ui/core';
 import { Draggable } from 'react-beautiful-dnd';
 import { useMutation } from '@apollo/client';
 
@@ -54,6 +54,7 @@ interface IssueCardProps extends IssueCardType {
   onClick: () => void;
   key?: string;
   index?: number;
+  setNewIssueSummary: (summary: string) => void;
 }
 
 export default ({
@@ -68,10 +69,20 @@ export default ({
   authorName,
   reporterName,
   subTasks = [],
-  projectMembers
+  projectMembers,
+  setNewIssueSummary
 }: IssueCardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const classes = useStyles();
+
+  const onSummaryValidation = useCallback(
+    e => {
+      if (e.keyCode == 13 || e.type === 'blur') {
+        setNewIssueSummary(e.target.value);
+      }
+    },
+    [setNewIssueSummary]
+  );
 
   const onCompleted = useCallback(() => {
     console.log('issue updated');
@@ -93,6 +104,7 @@ export default ({
     setIsModalOpen(false);
     mutate({ variables: { issueId: id, input: { summary, description, dueDate } } });
   }, []);
+
   return (
     <>
       <Draggable draggableId={`draggable-${id}`} index={index} type="ISSUE">
@@ -100,9 +112,18 @@ export default ({
           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
             <Card className={classes.cardContainer} onClick={onClick}>
               <CardContent>
-                <Typography className={classes.title} color="textSecondary" gutterBottom variant="h6">
-                  {capitalize(summary)}
-                </Typography>
+                {summary ? (
+                  <Typography className={classes.title} color="textSecondary" gutterBottom variant="h6">
+                    {capitalize(summary)}
+                  </Typography>
+                ) : (
+                  <TextField
+                    autoFocus
+                    onKeyDown={onSummaryValidation}
+                    placeholder="issue name"
+                    onBlur={onSummaryValidation}
+                  />
+                )}
                 <div
                   className={classes.actionsContainer}
                   style={{
