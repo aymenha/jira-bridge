@@ -1,3 +1,4 @@
 import moveIssue from './moveIssue';
+import updateIssue from './updateIssue';
 
-export default { moveIssue };
+export default { moveIssue, updateIssue };

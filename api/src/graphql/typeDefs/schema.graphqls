@@ -33,6 +33,7 @@ type Query {
 type Mutation {
   #Issue
   moveIssue(issueId: ID!, transitionId: ID!): Boolean
+  updateIssue(issueId: ID!, input: UpdateIssueInput!): Boolean
 }
 
 type User {
@@ -77,4 +78,10 @@ type Issue {
 type Transition {
   id: ID!
   name: String!
+}
+
+input UpdateIssueInput {
+  summary: String!
+  description: String
+  dueDate: String
 }
