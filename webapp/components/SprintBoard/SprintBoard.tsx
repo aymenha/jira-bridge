@@ -29,12 +29,7 @@ export default ({ columnsList, projectMembers, onDragEnd }: SprintBoardProps) =>
 
   return (
     <React.Fragment>
-      <BoardHeader
-        onSearch={searchText => console.log(searchText)}
-        projectMembers={members}
-        onAddMember={addMember}
-        onRemoveMember={removeMember}
-      />
+      <BoardHeader columnsList={columnsList} projectMembers={members} />
       <BoardBody columnsList={columnsList} onDragEnd={onDragEnd} />
     </React.Fragment>
   );
