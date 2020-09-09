@@ -10,6 +10,18 @@ class JiraApi extends RESTDataSource {
     request.headers.set('Authorization', process.env.JIRA_TOKEN);
   }
 
+  async createIssue(summary, projectId, issueTypeName) {
+    const body = { fields: { summary, project: { id: projectId }, issuetype: { name: issueTypeName } } };
+
+    return this.post(`rest/api/2/issue`, body);
+  }
+
+  async moveIssueToSprint(sprintId: number, issueId: number) {
+    const body = { issues: [issueId] };
+
+    return this.post(`/rest/agile/1.0/sprint/${sprintId}/issue`, body);
+  }
+
   async getBoardConfiguration(boardId: number) {
     return this.get(`rest/agile/1.0/board/${boardId}/configuration`);
   }

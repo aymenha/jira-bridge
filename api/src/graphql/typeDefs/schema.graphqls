@@ -32,6 +32,7 @@ type Query {
 
 type Mutation {
   #Issue
+  createIssue(input: CreateIssueInput!): Issue!
   moveIssue(issueId: ID!, transitionId: ID!): Boolean
   updateIssue(issueId: ID!, input: UpdateIssueInput!): Boolean
 }
@@ -79,6 +80,14 @@ type Issue {
 type Transition {
   id: ID!
   name: String!
+}
+
+input CreateIssueInput {
+  summary: String!
+  projectId: ID!
+  sprintId: ID!
+  issueTypeName: String!
+  statusName: String!
 }
 
 input UpdateIssueInput {
